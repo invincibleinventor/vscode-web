@@ -364,8 +364,13 @@
       
       var sussyrender= `
       <div class="codeeditor">
-         <pre><code class="text-neutral-300 text-xs">console.log('Hello')</code></pre>    
-         <pre><code class="text-neutral-300 text-xs">console.log('World')</code></pre>    
+         <pre><code class="text-green-300 text-xs">//instead of using</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">if(Condition){</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">doThis()</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">}</code></pre>    
+         <pre><code class="text-green-300 text-xs">//use this</code></pre>    
+                  <pre><code class="text-neutral-300 text-xs">Condition && doThis()</code></pre>    
+
       </div>
       `;
 
