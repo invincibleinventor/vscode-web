@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<head>
+   <title>HomePage.js - Visual Studio Code</title>
+   <script src="https://cdn.jsdelivr.net/npm/xterm@4.16.0/lib/xterm.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/tooltips-js@1.0.6/src/tooltips-js.min.js"></script>
+
+   <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/800px-Visual_Studio_Code_1.35_icon.svg.png">
+   <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+   <style>
+      html{
+      height: -webkit-fill-available;
+      overflow: hidden;
+      }
+      ::-webkit-scrollbar {
+      width: 0;  /* Remove scrollbar space */
+      background: transparent;  /* Optional: just make scrollbar invisible */
+      }
+      /* Optional: show position indicator in red */
+      ::-webkit-scrollbar-thumb {
+      background: #969696;
+      }
+      body{
+     
+      }
+      .codeeditor {
+      counter-reset: line var(--line-num, 0);
+     
+      }
+
+
+      .codeeditor pre {
+      counter-increment: line;
+      }
+      .codeeditor code::before {
+      content: counter(line) '  ';
+      }
+   </style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/vs2015.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/languages/javascript.min.js"></script>
+   <meta http-equiv="Content-Type" content="text/html">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>
+      tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+
+          }
+        }
+      }
+      }
+      
+   </script>
+</head>
+<body class="flex flex-col w-screen relative h-screen min-h-screen min-h-[-webkit-fill-available] overflow-x-hidden  ">
+   <div class="w-screen py-3 lg:py-2  bg-neutral-900 border-b border-b-neutral-800 flex  flex-row space-x-3 px-4 items-center ">
+      <img class="w-[14px] h-[14px] mr-1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/800px-Visual_Studio_Code_1.35_icon.svg.png">
+      <span class="text-xs text-white font-medium pr-1 " id="wintitle">HomePage.js - VSC</span>
+      <div class="lg:block hidden flex-row space-x-3 ">
+         <span id="filemenu" class="text-xs  text-gray-200 cursor-pointer hover:text-neutral-400 filebutton" onClick="openfile()">File</span>
+         <span class="text-xs text-gray-200  cursor-pointer hover:text-neutral-400 editbutton" onClick="openEdit()">Edit</span>
+         <span class="text-xs text-gray-200   cursor-pointer hover:text-neutral-400 " onClick="openSelection()">Selection</span>
+         <span class="text-xs text-gray-200  hover:text-neutral-400 ">View</span>
+         <span class="text-xs text-gray-200 hover:text-neutral-400">Go</span>
+         <span class="text-xs text-gray-200 hover:text-neutral-400   ">Run</span>
+         <span class="text-xs text-gray-200 hover:text-neutral-400 ">Terminal</span>
+         <span class="text-xs text-gray-200 hover:text-neutral-400 ">Help</span>
+      </div>
+   </div>
+   <ul id="filebox" class="filebox z-20 flex hidden flex-col bg-neutral-900 border border-neutral-600 mt-2 py-2 absolute top-8 left-[31.5rem]  w-64 space-y-1">
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer ">
+         <span class="text-xs  text-white mr-auto">New</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + N</span>
+      </li>
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Open</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + O</span>
+      </li>
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Save</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + S</span>
+      </li>
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Save As</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + Shift + S</span>
+      </li>
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Open Folder</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + K Ctrl + O</span>
+      </li>
+   </ul>
+   <ul id="editbox" class="filebox z-20 flex  hidden flex-col border border-neutral-600 bg-neutral-900 mt-2 py-2 absolute top-8 left-[31.5rem]  w-64 space-y-1">
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700 py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Undo</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + Y</span>
+      </li>
+      <li class="p-1 flex flex-row px-4 hover:bg-neutral-700  py-[6px] cursor-pointer">
+         <span class="text-xs  text-white mr-auto">Redo</span>
+         <span class="text-xs text-white text-gray-400">Ctrl + Z</span>
+      </li>
+   </ul>
+   <div class="bg-black flex flex-row flex-grow " >
+      <div class="bg-neutral-900 h-auto  relative p-2 w-max  flex flex-col py-2 content-center border-r border-r-neutral-800 border-l border-l-neutral-800 ">
+         <span id="explorerbutton" class="iconify lg:text-white text-neutral-400 hover:text-neutral-300 cursor-pointer w-9 h-6 my-3 cursor-pointer" onClick="toggleExplorer()" data-icon="codicon:files"></span>
+         <span class="iconify text-neutral-400 hover:text-neutral-300 cursor-pointer w-9 h-6 my-3" data-icon="fluent:search-16-regular" data-rotate="90deg"></span>
+         <span class="iconify text-neutral-400 hover:text-neutral-300 cursor-pointer w-9 h-6 my-3" data-icon="bx:bx-git-branch" data-rotate="0deg"></span>
+         <span class="iconify text-neutral-400 hover:text-neutral-300 cursor-pointer w-9 h-6 my-3 " id="githubbutton" data-icon="ant-design:github-outlined" onclick="selectGithub()" data-rotate="0deg"></span>
+         <span class="iconify text-neutral-400 hover:text-neutral-300 cursor-pointer w-9 h-6 mb-8 fixed bottom-2" data-icon="bytesize:settings" data-rotate="0deg"></span>
+      </div>
+      <div id="explorerpane" class=" bg-neutral-800 p-2 w-max border-r border-r-neutral-900  h-[100%] lg:flex hidden flex-col py-2  content-center space-y-2">
+         <div  onClick="toggleTree()" class=" cursor-pointer flex flex-row space-x-2 items-center content-center px-2 pr-10">
+            <span class="iconify text-white w-4 h-4" id="docutreebutton" data-icon="codicon:chevron-down"></span>
+            <span class="text-xs text-white uppercase font-medium">VSCode-Portfolio</span>
+         </div>
+         <div class="flex flex-col space-y-[6px] pl-6" id="itemstree">
+            <div onClick="selectRick()"  class="cursor-pointer flex flex-row space-x-2 items-center px-2 ">
+               <span class="iconify text-white w-4 h-4 text-neutral-400 text-orange-400" data-icon="bx:bx-code"></span>
+               <span id="rickexp" class="text-[12px] text-neutral-200 ">HomePage.js</span>
+            </div>
+            <div onClick="selectSussy()" class="cursor-pointer flex flex-row space-x-2 items-center  px-2 ">
+               <span class="iconify text-white  w-4 h-4 text-neutral-400 text-orange-400" data-icon="bx:bx-code"></span>
+               <span id="susexp" class="text-[12px]  text-neutral-400 ">CoolTrick.js</span>
+            </div>
+         </div>
+      </div>
+      <div class="flex flex-col flex-grow   ">
+         <ul class="bg-neutral-800 h-7 flex flex-row  items-center content-center overflow-x-auto overflow-y-hidden">
+            <li class=" p-[3px] py-0 px-[0px] h-auto">
+               <div id="RickAstley" onClick="selectRick()" class="px-3 lg:px-5 flex flex-row space-x-2 cursor-pointer items-center content-center py-[6px] w-max bg-neutral-900  ">
+                  <span class="iconify text-orange-400 w-4 h-4" data-icon="bx:bx-code"></span>
+                  <span class="text-xs text-orange-200">HomePage.js</span>
+               </div>
+            </li>
+            
+            <li class="  p-[3px] px-[0px]  py-0 ">
+               <div id="SussyBaka" onclick="selectSussy()" class="px-3 lg:px-5 flex flex-row space-x-2 cursor-pointer items-center content-center  py-[6px]  w-max ">
+                  <span class="iconify text-orange-400 w-4 h-4" data-icon="bx:bx-code"></span>
+                  <span class="text-xs text-orange-200">CoolTrick.js</span>
+               </div>
+              
+            </li>
+         </ul>
+         <div class=" h-[100%] w-[100%] relative p-2 py-1">
+            <div class="relative overflow-scroll " id="contentele"></div>
+         </div>
+      </div>
+      <div id="previewpane" class="hidden w-64 flex-grow bg-black border border-neutral-600">
+         <div class="px-5 flex flex-row items-center content-center border-b border-b-neutral-600 bg-neutral-900  py-[10px]  ">
+            <div class="flex flex-row space-x-2 items-center content-center">
+                <span class="iconify text-white w-4 h-4" data-icon="codicon:terminal"></span>
+               <span class="text-xs text-neutral-200">Terminal</span>
+            </div>
+            <span onClick="togglePreview()" class="iconify text-white w-4 h-4 ml-auto cursor-pointer" data-icon="codicon:close"></span>
+         </div>
+         <div id="terminal"></div>
+      </div>
+      <div class="w-[100%]  fixed bottom-0 overflow-x-auto bg-neutral-900 flex flex-row items-center content-center">
+         <div class="flex mx-2 p-1  ml-0 px-3 flex-row space-x-1 items-center content-center mr-3 bg-orange-600">
+            <span class="iconify w-3 h-3 text-white" data-icon="mdi:microsoft-visual-studio-code"></span>
+            <span class="text-xs text-white">VSCode</span>
+         </div>
+         <div class="flex mx-2 ml-0 flex-row space-x-1 items-center content-center ">
+            <span class="iconify w-3 h-3 text-white" data-icon="bx:bx-git-branch"></span>
+            <span class="text-xs text-white">main</span>
+         </div>
+         <div class="flex mx-2 mr-0  flex-row space-x-1 items-center content-center">
+            <span class="iconify w-[14px] h-[14px] text-white inline-flex" data-icon="codicon:error"></span>
+            <span class="text-xs text-white inline-flex">0</span>
+         </div>
+         <div class="flex mx-2  flex-row space-x-1 items-center content-center">
+            <span class="iconify w-3 h-3 text-white inline-flex" data-icon="codicon:warning"></span>
+            <span class="text-xs text-white inline-flex">0</span>
+         </div>
+         <div class="lg:flex hidden space-x-5 h-6  ml-auto items-center content-center mr-4">
+            <div class="flex flex-row space-x-[6px] items-center content-center">
+               <span class="iconify text-white w-[12px] h-[12px] ml-auto" data-icon="codicon:terminal"></span>
+               <span id="previewtext" class="text-xs h-4 text-white cursor-pointer" onClick="togglePreview()">Open Terminal</span>
+            </div>
+            <span class="text-xs h-4 text-white  ">Spaces: 4</span>
+            <span class="text-xs h-4 text-white ">Ln 75, Col 49</span>
+            <span class="text-xs h-4 text-white ">UTF-8</span>
+            <span class="text-xs h-4 text-white ">Javascript</span>
+         </div>
+      </div>
+   </div>
+   
+   <script>
+      var explorerpaneenabled=true;
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        
+         explorerpaneenabled = false;
+      }
+
+      var isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/i.test(navigator.userAgent);
+      
+      
+      attachgit()
+      
+      
+      var selectedpage;
+      
+      
+      
+      
+         function toggleExplorer(){
+             getSelectedPage()
+             if (document.getElementById('explorerpane').classList.contains('lg:flex')){
+         document.getElementById('explorerpane').classList.add('hidden');
+         document.getElementById('explorerpane').classList.remove('lg:flex');
+         document.getElementById('explorerbutton').classList.add('text-neutral-400');
+         document.getElementById('explorerbutton').classList.remove('lg:text-white');
+      
+         document.getElementById('explorerbutton').classList.remove('text-white');
+      
+             }
+             else{
+                 document.getElementById('explorerpane').classList.add('lg:flex');
+                 document.getElementById('explorerpane').classList.remove('hidden');
+                 document.getElementById('explorerbutton').classList.remove('text-neutral-400');
+                 document.getElementById('explorerbutton').classList.remove('lg:text-white');
+         document.getElementById('explorerbutton').classList.add('text-white');
+      
+             }
+      
+      
+             function toggleSearch(){
+                 
+             }
+      }
+      
+      
+         a=['10rem','12rem','14rem','18rem','20.35rem','22rem','24rem','28rem']
+      allmenus=['filebox','editbox','selectionbox', 'viewbox', 'gobox','runbox','terminalbox','helpbox']
+      
+       function resetAllMenu(){
+         document.getElementById('filebox').classList.add('hidden')
+         document.getElementById('editbox').classList.add('hidden')
+         document.getElementById('selectionbox').classList.add('hidden');
+       
+      }
+         function openfile(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+             document.getElementById('filebox').classList.toggle('hidden');
+             document.getElementById('editbox').classList.add('hidden');
+             document.getElementById('selectionbox').classList.add('hidden');
+      
+      
+      
+         }
+      
+        
+      
+      
+      
+         function openEdit(){
+             document.getElementById('editbox').classList.add('left-['+a[1]+']');
+      
+      document.getElementById('editbox').classList.toggle('hidden');
+      document.getElementById('filebox').classList.add('hidden');
+      document.getElementById('selectionbox').classList.add('hidden');
+      
+      
+      
+         }
+      
+      
+         function openSelection(){
+             document.getElementById('selectionbox').classList.add('left-['+a[2]+']');
+      
+      document.getElementById('selectionbox').classList.toggle('hidden');
+      
+      document.getElementById('filebox').classList.add('hidden');
+             document.getElementById('editbox').classList.add('hidden');
+      }
+      
+      
+      
+         function openView(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+      document.getElementById('filebox').classList.toggle('hidden');
+         }
+         function openGo(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+      document.getElementById('filebox').classList.toggle('hidden');
+         }
+      
+         function openRun(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+      document.getElementById('filebox').classList.toggle('hidden');
+         }
+      
+         function openTerminal(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+      document.getElementById('filebox').classList.toggle('hidden');
+         }
+      
+         function openHelp(){
+             document.getElementById('filebox').classList.add('left-['+a[0]+']');
+      
+      document.getElementById('filebox').classList.toggle('hidden');
+         }
+      
+        
+      
+      
+      
+      
+      
+      function toggleTree(){
+         document.getElementById('itemstree').classList.toggle('hidden')
+         if (document.getElementById('itemstree').classList.contains('hidden')){
+         document.getElementById("docutreebutton").setAttribute('data-icon', 'codicons:chevron-up')
+         }
+         else{
+             document.getElementById("docutreebutton").setAttribute('data-icon', 'codicons:chevron-down')
+      
+         }
+      
+      }
+      
+      
+      var rickrender = `
+      <div class="flex flex-col py-4">
+         <div class="mx-auto mt-4 w-56 h-48 flex flex-row items-center content-center" id="gitcont">
+      
+   </div>
+         <h1 class="sm:text-xl mb-3  px-10 text-lg text-orange-400 font-mono text-center font-bold">'CSS Wizard' Felis</h1>
+         <h1 class="sm:text-md md:text-[14px]  text-xs text-neutral-400 text-center w-5/6 font-mono sm:w-5/6 md:w-3/6 lg:w-3/6 mx-auto sm:leading-7 leading-8">A Coder proficient in modern frontend technologies. Interested in Linux and Open source Projects</h1>
+         <div class="flex mt-6 sm:mt-5 flex-row items-center content-center">
+         <div class="mx-auto flex flex-row px-4 py-2 bg-sky-500 space-x-3 items-center content-center " onclick="window.location.assign('https://discord.gg/d6HA4hRJ')">
+            <span class="iconify text-black" data-icon="akar-icons:discord-fill"></span>
+         <button class=" text-sm sm:text-md  font-bold w-max font-mono ">Contact in Discord</button>
+         </div>
+         </div>
+       
+      
+      `;
+      
+
+      function attachgit(){
+      fetch('https://api.github.com/users/betterwebdev').then(function (response) {
+      return response.json();
+      }).then(function (data) {
+      
+         document.getElementById('gitcont').insertAdjacentHTML('beforeend', `
+      <div class="flex items-center content-center flex-col group">
+         <img src="${data.avatar_url}" onclick="window.location.assign('https://github.com/${data.login}')" class=" rounded-full  filter hover:trasition-all ease-linear duration-100 cursor-pointer hover:brightness-50 border border-white mx-auto w-[50%] h-[50%] mb-5">
+         <span id="gitbox" class="text-neutral-300 text-sm mx-auto cursor-pointer" onclick="window.location.assign('https://github.com/${data.login}')">@${data.login}</span>    
+         </div>
+         `);
+
+      });
+   }
+
+     
+      
+      var sussyrender= `
+      <div class="codeeditor">
+         <pre><code class="text-neutral-300 text-xs">console.log('Hello')</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">console.log('World')</code></pre>    
+      </div>
+      `;
+
+
+      var select1render= `
+      <div class="codeeditor">
+         <pre><code class="text-neutral-300 text-xs">console.log('Hello')</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">console.log('World')</code></pre>    
+      </div>
+      `;
+
+      var select2render= `
+      <div class="codeeditor">
+         <pre><code class="text-neutral-300 text-xs">console.log('Hello')</code></pre>    
+         <pre><code class="text-neutral-300 text-xs">console.log('World')</code></pre>    
+      </div>
+      `;
+      
+      var githubrender = `
+      <div class="codeeditor flex-grow w-[100%]  top-[70px] pb-20 md:pb-18  bottom-[12px] z-1 fixed overflow-scroll overflow-x-auto" id="ok">
+         
+      <div>
+      `
+      
+      
+      
+      
+      var selectedpage = 'rick';
+      
+      
+      
+      function toggleExplorer(){
+      
+         if (selectedpage == 'github'){
+             selectRick()
+         }
+      else {
+      
+             if (document.getElementById('explorerpane').classList.contains('lg:flex')){
+         document.getElementById('explorerpane').classList.add('hidden');
+         document.getElementById('explorerpane').classList.remove('lg:flex');
+         document.getElementById('explorerbutton').classList.add('text-neutral-400');
+         document.getElementById('explorerbutton').classList.remove('lg:text-white');
+      
+         document.getElementById('explorerbutton').classList.remove('text-white');
+      
+             }
+             else{
+                 if(explorerpaneenabled){
+                 document.getElementById('explorerpane').classList.add('lg:flex');
+                 document.getElementById('explorerpane').classList.remove('hidden');
+                 }
+                 document.getElementById('explorerbutton').classList.remove('text-neutral-400');
+                 document.getElementById('explorerbutton').classList.remove('lg:text-white');
+      
+         document.getElementById('explorerbutton').classList.add('text-white');
+      
+             }
+      
+         }
+      
+      
+             function toggleSearch(){
+                 
+             }
+      }
+      
+      
+      function getSelectedPage(){
+         if (selectedpage=="rick"){
+      
+         return rickrender;
+         selectRick()
+         }
+        else if (selectedpage=="sussy"){
+            return sussyrender;
+            selectSussy()
+      
+        }
+        else if (selectedpage == "github"){
+            return githubrender;
+      
+            selectGithub()
+        }
+        else if (selectedpage == "select1"){
+            return select1render;
+      
+            selectGithub()
+        }
+        else if (selectedpage == "select2"){
+            return select2render;
+      
+            selectGithub()
+        }
+      }
+      
+var spacing = '    ';
+var newline = '';
+
+var breaks = 4;
+      if (isMobile && !isTablet) {
+         spacing= ''
+         newline='\n'
+         breaks = 4
+      }
+      else if (!isMobile && isTablet) {
+         spacing = ''
+         newline = '\n'
+         breaks = 6
+      }
+      else {
+         spacing = '    '
+         newline=''
+         
+      }
+      
+      
+      
+     
+      
+      document.getElementById('contentele').innerHTML = getSelectedPage();
+      
+      function selectRick(){
+         document.getElementById('RickAstley').classList.add('bg-neutral-900')
+         document.getElementById('SussyBaka').classList.remove('bg-neutral-900')
+         document.getElementById('rickexp').classList.add('text-neutral-200')
+         document.getElementById('rickexp').classList.remove('text-neutral-400')
+         document.getElementById('susexp').classList.add('text-neutral-400')
+         document.getElementById('susexp').classList.remove('text-neutral-200')
+         document.getElementById('wintitle').innerHTML = 'RickAstley.js - VSC'
+         selectedpage="rick";
+         document.getElementById('githubbutton').classList.remove('text-neutral-400'); 
+         document.getElementById('githubbutton').classList.remove('text-white');
+         document.getElementById('githubbutton').classList.add('text-neutral-400'); 
+         document.getElementById('contentele').innerHTML = getSelectedPage();
+         attachgit();
+      }
+      
+      function selectSussy(){
+         document.getElementById('SussyBaka').classList.add('bg-neutral-900')
+         document.getElementById('RickAstley').classList.remove('bg-neutral-900')
+         document.getElementById('susexp').classList.add('text-neutral-200')
+         document.getElementById('susexp').classList.remove('text-neutral-400')
+         document.getElementById('rickexp').classList.add('text-neutral-400')
+         document.getElementById('rickexp').classList.remove('text-neutral-200')
+         document.getElementById('wintitle').innerHTML = 'SussyBaka.js - VSC'
+         selectedpage="sussy";
+         document.getElementById('githubbutton').classList.remove('text-white');
+         document.getElementById('githubbutton').classList.add('text-neutral-400'); 
+      
+      
+      
+         document.getElementById('contentele').innerHTML = getSelectedPage();
+      
+      }
+
+      function selectSelect1(){
+         document.getElementById('select1').classList.add('bg-neutral-900')
+         document.getElementById('RickAstley').classList.remove('bg-neutral-900')
+         document.getElementById('SussyBaka').classList.remove('bg-neutral-900')
+         document.getElementById('select2').classList.remove('bg-neutral-900')
+         document.getElementById('select1exp').classList.add('text-neutral-200')
+         document.getElementById('select1exp').classList.remove('text-neutral-400')
+         document.getElementById('rickexp').classList.add('text-neutral-400')
+         document.getElementById('rickexp').classList.remove('text-neutral-200')
+         document.getElementById('susexp').classList.add('text-neutral-400')
+         document.getElementById('susexp').classList.remove('text-neutral-200')
+         document.getElementById('select2exp').classList.add('text-neutral-400')
+         document.getElementById('select2exp').classList.remove('text-neutral-200')
+         document.getElementById('wintitle').innerHTML = 'Select1.js - VSC'
+         selectedpage="select1";
+         document.getElementById('githubbutton').classList.remove('text-white');
+         document.getElementById('githubbutton').classList.add('text-neutral-400'); 
+      
+      
+      
+         document.getElementById('contentele').innerHTML = getSelectedPage();
+      }
+
+
+
+      
+
+
+      
+      
+      function selectGithub(){
+         selectedpage="github"  ;
+         document.getElementById('contentele').innerHTML = getSelectedPage();
+         document.getElementById('githubbutton').classList.remove('text-neutral-400'); 
+      
+         document.getElementById('githubbutton').classList.add('text-white'); 
+      document.getElementById('explorerpane').classList.add('hidden')
+      document.getElementById('explorerbutton').classList.remove('text-white')
+      document.getElementById('explorerbutton').classList.add('text-neutral-400')
+      
+      
+      fetch('https://api.github.com/users/betterwebdev/repos').then(function (response) {
+      return response.json();
+      }).then(function (data) {
+        
+      
+      fetch('https://api.github.com/users/betterwebdev').then(function (i) {
+      return i.json();
+      }).then(function (o) {
+
+         var list = document.getElementById('ok');
+      
+      var wizards = data;
+      var fragment = document.createDocumentFragment();
+      
+      document.getElementById('ok').insertAdjacentHTML('beforeend', `<pre><code class="text-neutral-400 text-xs">Bio:</code></pre>
+      <pre><code class="text-neutral-400 text-xs">{</code></pre>
+         <pre><code class="text-neutral-400 text-xs"><a href="https://github.com/betterwebdev}">Name: ${o.login},</a></code></pre>
+         <pre><code class="text-neutral-400 text-xs"><a href="https://github.com/betterwebdev}">Followers: ${o.followers},</a></code></pre>
+         <pre><code class="text-neutral-400 text-xs"><a href="https://github.com/betterwebdev}">Following: ${o.following}</a></code></pre>
+      <pre><code class="text-neutral-400 text-xs">}</code></pre>
+         `);
+
+
+      for (var i = 0; i < wizards.length; i++) {
+
+         var dc = wizards[i].description;
+      
+         
+
+         document.getElementById('ok').insertAdjacentHTML('beforeend', `<pre><code class="text-neutral-400 text-xs"><a href="https://github.com/betterwebdev/${wizards[i].name}">${wizards[i].name}:</a></code></pre>
+          <pre><code class="text-neutral-400 text-xs">{</code></pre>
+            <pre><code class="text-neutral-400 text-xs ">${""}Description: "${dc}",</code></pre>
+            <pre><code class="text-neutral-400 text-xs">${""}Homepage: "<a class="underline" href="${wizards[i].homepage}">github.com/${wizards[i].name}</a>",</code></pre>
+            <pre><code class="text-neutral-400 text-xs">${""}Created At: "${wizards[i].created_at}",</code></pre>
+            <pre><code class="text-neutral-400 text-xs">${""}Forked: "${wizards[i].fork}"</code></pre>
+            
+            
+         <pre><code class="text-neutral-400 text-xs">}</code></pre>
+         `);
+      }
+      
+     
+      }).catch(function (err) {
+      console.warn('Something went wrong.', err);
+      });
+      
+      
+   });
+
+}
+      
+      
+      
+      
+      
+      
+      
+      function togglePreview(){
+      
+         document.getElementById('previewpane').classList.toggle('hidden')
+      
+         if (document.getElementById('previewpane').classList.contains('hidden')){
+             document.getElementById('previewtext').innerHTML = "Open Terminal"
+         }
+         else{
+             document.getElementById('previewtext').innerHTML = "Close Terminal"
+      
+         }
+      }
+      
+      
+      
+      
+      
+      var term = new Terminal();
+        term.open(document.getElementById('terminal'));
+        term.write('Work In Progress...')
+      
+      
+        term.onKey(e => {
+    console.log(e.key);
+    term.write(e.key);
+    if (e.key == '\r')
+        term.write('\n');
+})
+      
+      
+   </script>
+</body>
+</html>
