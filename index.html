@@ -495,7 +495,7 @@ var breaks = 4;
          document.getElementById('rickexp').classList.remove('text-neutral-400')
          document.getElementById('susexp').classList.add('text-neutral-400')
          document.getElementById('susexp').classList.remove('text-neutral-200')
-         document.getElementById('wintitle').innerHTML = 'RickAstley.js - VSC'
+         document.getElementById('wintitle').innerHTML = 'HomePage.js - VSC'
          selectedpage="rick";
          document.getElementById('githubbutton').classList.remove('text-neutral-400'); 
          document.getElementById('githubbutton').classList.remove('text-white');
@@ -511,7 +511,7 @@ var breaks = 4;
          document.getElementById('susexp').classList.remove('text-neutral-400')
          document.getElementById('rickexp').classList.add('text-neutral-400')
          document.getElementById('rickexp').classList.remove('text-neutral-200')
-         document.getElementById('wintitle').innerHTML = 'SussyBaka.js - VSC'
+         document.getElementById('wintitle').innerHTML = 'CoolTrick.js - VSC'
          selectedpage="sussy";
          document.getElementById('githubbutton').classList.remove('text-white');
          document.getElementById('githubbutton').classList.add('text-neutral-400'); 
@@ -561,7 +561,8 @@ var breaks = 4;
       document.getElementById('explorerpane').classList.add('hidden')
       document.getElementById('explorerbutton').classList.remove('text-white')
       document.getElementById('explorerbutton').classList.add('text-neutral-400')
-      
+               document.getElementById('wintitle').innerHTML = 'Github.js - VSC'
+
       
       fetch('https://api.github.com/users/invincibleinventor/repos').then(function (response) {
       return response.json();
