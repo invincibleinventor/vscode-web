@@ -601,7 +601,7 @@ var breaks = 4;
          document.getElementById('ok').insertAdjacentHTML('beforeend', `<pre><code class="text-neutral-400 text-xs"><a href="https://github.com/invincibleinventor/${wizards[i].name}">${wizards[i].name}:</a></code></pre>
           <pre><code class="text-neutral-400 text-xs">{</code></pre>
             <pre><code class="text-neutral-400 text-xs ">${""}Description: "${dc}",</code></pre>
-            <pre><code class="text-neutral-400 text-xs">${""}Homepage: "<a class="underline" href="${wizards[i].homepage}">github.com/${wizards[i].name}</a>",</code></pre>
+            <pre><code class="text-neutral-400 text-xs">${""}Homepage: "<a class="underline" href="${wizards[i].homepage}">${wizards[i].name}.vercel.app</a>",</code></pre>
             <pre><code class="text-neutral-400 text-xs">${""}Created At: "${wizards[i].created_at}",</code></pre>
             <pre><code class="text-neutral-400 text-xs">${""}Forked: "${wizards[i].fork}"</code></pre>
             
