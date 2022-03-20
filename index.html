@@ -122,7 +122,7 @@
             </div>
             <div onClick="selectSussy()" class="cursor-pointer flex flex-row space-x-2 items-center  px-2 ">
                <span class="iconify text-white  w-4 h-4 text-neutral-400 text-orange-400" data-icon="bx:bx-code"></span>
-               <span id="susexp" class="text-[12px]  text-neutral-400 ">CoolTrick.js</span>
+               <span id="susexp" class="text-[12px]  text-neutral-400 ">MySkills.js</span>
             </div>
          </div>
       </div>
@@ -138,7 +138,7 @@
             <li class="  p-[3px] px-[0px]  py-0 ">
                <div id="SussyBaka" onclick="selectSussy()" class="px-3 lg:px-5 flex flex-row space-x-2 cursor-pointer items-center content-center  py-[6px]  w-max ">
                   <span class="iconify text-orange-400 w-4 h-4" data-icon="bx:bx-code"></span>
-                  <span class="text-xs text-orange-200">CoolTrick.js</span>
+                  <span class="text-xs text-orange-200">MySkills.js</span>
                </div>
               
             </li>
@@ -370,12 +370,17 @@
       
       var sussyrender= `
       <div class="codeeditor">
-         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//instead of using</span></code></pre>    
-         <pre><code class="text-neutral-300 text-xs">if(Condition){</code></pre>    
-         <pre><code class="text-neutral-300 text-xs">doThis()</code></pre>    
-         <pre><code class="text-neutral-300 text-xs">}</code></pre>    
-         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//use this</span></code></pre>    
-                  <pre><code class="text-neutral-300 text-xs">Condition && doThis()</code></pre>    
+         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//Web Frontend</span></code></pre>    
+         <pre><code class="text-neutral-300 text-xs">var Frontend = ['HTML', 'CSS', 'JS', 'TailwindCSS', 'Bootstrap', 'Svelte', 'ReactJS', 'NextJS']</code></pre>    
+         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//Web Backend</span></code></pre>    
+         <pre><code class="text-neutral-300 text-xs">var Backend = ['NodeJS', 'Firebase', 'MongoDB']</code></pre> 
+         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//Other Languages</span></code></pre>    
+         <pre><code class="text-neutral-300 text-xs">var Other = ['C', 'C++', 'Python (Django and Flask)', 'Shell Scripting']</code></pre>    
+         <pre><code class="text-neutral-300 text-xs"><span class="text-green-300">//Tools</span></code></pre>    
+
+         <pre><code class="text-neutral-300 text-xs">var Other = ['Git', 'Linux (with KDE)', 'Figma', 'Nano', 'VSC']</code></pre>    
+
+
       </div>
       `;
 
@@ -521,7 +526,7 @@ var breaks = 4;
          document.getElementById('susexp').classList.remove('text-neutral-400')
          document.getElementById('rickexp').classList.add('text-neutral-400')
          document.getElementById('rickexp').classList.remove('text-neutral-200')
-         document.getElementById('wintitle').innerHTML = 'CoolTrick.js - VSC'
+         document.getElementById('wintitle').innerHTML = 'MySkills.js - VSC'
          selectedpage="sussy";
          document.getElementById('githubbutton').classList.remove('text-white');
          document.getElementById('githubbutton').classList.add('text-neutral-400'); 
