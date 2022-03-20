@@ -3,6 +3,8 @@
    <title>HomePage.js - Visual Studio Code</title>
    <script src="https://cdn.jsdelivr.net/npm/xterm@4.16.0/lib/xterm.js"></script>
    <script type="module">
+            import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-auth.js";
+
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-analytics.js";
      
@@ -19,6 +21,20 @@
 
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+
+const auth = getAuth();
+signInWithPopup(auth, provider)
+  .then((result) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    const user = result.user;
+  }).catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    const email = error.email;
+    const credential = GoogleAuthProvider.credentialFromError(error);
+  });
+      console.log(user);
    </script>
    <script src="https://cdn.jsdelivr.net/npm/tooltips-js@1.0.6/src/tooltips-js.min.js"></script>
    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/800px-Visual_Studio_Code_1.35_icon.svg.png">
