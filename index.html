@@ -2,44 +2,7 @@
 <head>
    <title>HomePage.js - Visual Studio Code</title>
    <script src="https://cdn.jsdelivr.net/npm/xterm@4.16.0/lib/xterm.js"></script>
-   <script type="module">
-            import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-auth.js";
-
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-analytics.js";
-     
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7wM-_OAcUmmQRqGSziK0a6-_pv9EtTS0",
-    authDomain: "webvscode.firebaseapp.com",
-    projectId: "webvscode",
-    storageBucket: "webvscode.appspot.com",
-    messagingSenderId: "607276396650",
-    appId: "1:607276396650:web:6c1b8c14eda5c0b8665a13",
-    measurementId: "G-E4FN1KL46X"
-  };
-
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-const provider = new GoogleAuthProvider();
-function signIn(){
-const auth = getAuth();
-signInWithPopup(auth, provider)
-  .then((result) => {
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    const user = result.user;
-         console.log(user);
-
-  }).catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const email = error.email;
-    const credential = GoogleAuthProvider.credentialFromError(error);
-  });
-   
-}
-   </script>
+ 
    <script src="https://cdn.jsdelivr.net/npm/tooltips-js@1.0.6/src/tooltips-js.min.js"></script>
    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/800px-Visual_Studio_Code_1.35_icon.svg.png">
    <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
